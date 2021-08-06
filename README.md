@@ -15,30 +15,55 @@ redis clojure client based on [redisson](https://github.com/redisson/redisson).
 ```clojure
 $ make repl
 
-=> (require '[redclaw.core :as rc])
+=> (require '[redclaw.core :as rc]  ;; core functionality
+            '[redclaw.data :as rd]) ;; working with data/structures
 ```
+
 ```clojure
 => (def redis (rc/connect))  ;; by default will connect to a locally running redis on 6379 port
 #'user/redis
 
-=> (def s (rc/rset redis "solar-system"))
-#'user/s
+=> (def planets (rc/rset redis "planets"))
+#'user/planets
 
-=> (rc/add-all s #{:mercury :venus :earth :mars :jupiter :saturn :uranus :neptune :pluto})
-true
-=> (count s)
-9
-=> (type s)
-org.redisson.RedissonSet
+=> (def solar-system (rc/rmap redis "solar-system"))
+#'user/solar-system
 
-=> (rc/read-all s)
-#{:earth :mars :venus :jupiter :uranus :neptune :mercury :pluto :saturn}
+=> (rd/into solar-system {:saturn {:age 4503000000} :jupiter {:age 4603000000}})
+
+=> solar-system
+{:jupiter {:age 4603000000}, :saturn {:age 4503000000}}
+
+=> (:jupiter solar-system)
+{:age 4603000000}
 ```
+
+clojure seq functions, such as `into`, for maps, sets, etc.. would work the same way it works in Clojure taking vectors and all:
+
+```
+=> (rd/into planets [:mercury :venus :earth :mars :jupiter :saturn :uranus :neptune])
+
+=> planets
+#{:uranus :jupiter :saturn :mercury :neptune :venus :mars :earth}
+
+user=> (rd/conj planets :pluto)
+true
+
+;; now with pluto
+user=> planets
+#{:uranus :jupiter :saturn :mercury :neptune :pluto :venus :mars :earth}
+```
+
+> _`redclaw.data` also has one to one redisson mapped functions: `add`, `add-all`, `get-all`, etc.._
 
 looking inside the source (redis server):
 
 ```bash
-redis 127.0.0.1:6379> smembers "solar-system"
+127.0.0.1:6379> keys *
+1) "planets"
+2) "solar-system"
+
+redis 127.0.0.1:6379> smembers "planets"
 1) "\x04>\x05earth"
 2) "\x04>\x05pluto"
 3) "\x04>\ajupiter"

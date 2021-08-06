@@ -36,6 +36,21 @@
          (.setNodeAddresses uris))
      config)))
 
+(defn replicated-config
+  "creates a replicated servers config"
+  ([]
+   (cluster-config {}))
+  ([{:keys [uris scan-interval]
+     :or {uris ["redis://127.0.0.1:6379"]
+          scan-interval 2000}
+     :as config}]
+   (let [config (Config.)
+         rconf (.useReplicatedServers config)]
+     (doto rconf
+           (.setScanInterval scan-interval)
+           (.setNodeAddresses uris))
+     config)))
+
 (defn connect
   ([]
    (Redisson/create))
@@ -49,23 +64,3 @@
 
 (defn rmap [redis mname]
   (.getMap redis mname))
-
-;-------------------------------------------
-
-(defn add [rs v]
-  (.add rs v))
-
-(defn add-all [rs xs]
-  (.addAll rs xs))
-
-(defn read-all [rs]
-  (.readAll rs))
-
-(defn put [rm k v]
-  (.put rm k v))
-
-(defn put-all [rm m]
-  (.putAll rm m))
-
-(defn get-all [rm]
-  (.getAll rm))
