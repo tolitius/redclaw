@@ -2,8 +2,8 @@
 
 > _"... Red Claw managed to pull Batman's Cowl from his face"_
 
-[![<! release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https%3A%2F%2Fclojars.org%2Ftolitius%2Fredclaw%2Flatest-version.json&query=version&colorB=blue)](https://github.com/tolitius/redclaw/releases)
-[![<! clojars>](https://img.shields.io/clojars/v/tolitius/redclaw.svg)](https://clojars.org/tolitius/redclaw)
+[![<! release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https%3A%2F%2Fclojars.org%2Fcom.tolitius%2Fredclaw%2Flatest-version.json&query=version&colorB=blue)](https://github.com/tolitius/redclaw/releases)
+[![<! clojars>](https://img.shields.io/clojars/v/com.tolitius/redclaw.svg)](https://clojars.org/com.tolitius/redclaw)
 
 redis clojure client based on [redisson](https://github.com/redisson/redisson).
 

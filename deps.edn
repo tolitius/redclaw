@@ -9,7 +9,7 @@
                       :main-opts  ["-m" "depot.outdated.main" "-a" "outdated"]}
            :tag {:extra-deps {tolitius/tag {:mvn/version "0.1.7"}}
                  :main-opts ["-m" "tag.core" "tolitius/redclaw" "redis clojure client based on redisson"]}
-           :jar {:extra-deps {seancorfield/depstar {:mvn/version "2.1.278"}}
+           :jar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
                  :extra-paths ["target/about"]
                  :main-opts ["-m" "hf.depstar.jar" "target/redclaw.jar" "--exclude" "clojure/core/specs/alpha.*"]}
            :deploy {:extra-deps {deps-deploy/deps-deploy {:mvn/version "RELEASE"}}
