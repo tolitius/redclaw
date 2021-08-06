@@ -17,15 +17,13 @@ $ make repl
 
 => (require '[redclaw.core :as rc]  ;; core functionality
             '[redclaw.data :as rd]) ;; working with data/structures
+
+=> (def redis (rc/connect))  ;; by default will connect to a locally running redis on 6379 port
+#'user/redis
 ```
 
 ```clojure
-=> (def redis (rc/connect))  ;; by default will connect to a locally running redis on 6379 port
-#'user/redis
-
-=> (def planets (rc/rset redis "planets"))
-#'user/planets
-
+;; a map
 => (def solar-system (rc/rmap redis "solar-system"))
 #'user/solar-system
 
@@ -38,9 +36,13 @@ $ make repl
 {:age 4603000000}
 ```
 
-clojure seq functions, such as `into`, for maps, sets, etc.. would work the same way it works in Clojure taking vectors and all:
+clojure seq functions, such as `into`, for maps, sets, etc.. would work the same way they do on clojure seqs taking vectors and all:
 
-```
+```clojure
+;; a set
+=> (def planets (rc/rset redis "planets"))
+#'user/planets
+
 => (rd/into planets [:mercury :venus :earth :mars :jupiter :saturn :uranus :neptune])
 
 => planets
