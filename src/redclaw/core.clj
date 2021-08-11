@@ -64,3 +64,9 @@
 
 (defn rmap [redis mname]
   (.getMap redis mname))
+
+(defn rlist [redis lname]
+  (.getList redis lname))
+
+(defn rlong [redis lname]
+  (.getAtomicLong redis lname))
