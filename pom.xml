@@ -4,7 +4,7 @@
   <packaging>jar</packaging>
   <groupId>com.tolitius</groupId>
   <artifactId>redclaw</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <name>redclaw</name>
   <description>redis clojure client based on redisson</description>
   <url>https://github.com/tolitius/redclaw</url>
