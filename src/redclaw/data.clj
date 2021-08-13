@@ -1,5 +1,5 @@
 (ns redclaw.data
-  (:refer-clojure :exclude [into conj keys remove get set contains? empty? some?])
+  (:refer-clojure :exclude [into conj keys remove get set contains? empty?])
   (:require [clojure.set :as set]
             [clojure.tools.logging :as log])
   (:import [org.redisson RedissonSet
@@ -10,8 +10,6 @@
 (defprotocol Seq
   (conj [xs v])
   (into [xs oxs])
-  (get [k] [rm k])
-  (set [xs k])
   (get-all [rm] [rm xs])
   (contains? [rm k]))
 
@@ -21,6 +19,7 @@
 
 (extend-protocol Seq
   RedissonMap
+
   (conj [rm k v]
     (.put rm k v))
 
@@ -29,18 +28,16 @@
          (clojure.core/into {})
          (.putAll rm)))
 
-  (get [rm k]
-    (.get rm k))
-
   (get-all
-    ([rm xs] (.getAll rm xs))
-    ([rm] (get-all rm (.keySet rm))))
+    ([rm] (get-all rm (.keySet rm)))
+    ([rm xs] (.getAll rm xs)))
 
   (contains? [rm v]
     (.containsKey rm v)))
 
 (extend-protocol Seq
   RedissonSet
+
   (conj [rs v]
     (.add rs v))
 
@@ -57,6 +54,7 @@
 
 (extend-protocol Seq
   RedissonList
+
   (conj [rs v]
     (.add rs v))
 
@@ -70,14 +68,6 @@
 
   (contains? [rs v]
     (.contains rs v)))
-
-(extend-protocol Seq
-  RedissonAtomicLong
-  (set [rm v]
-    (.set rm v))
-
-  (get [k]
-    (.get k)))
 
 (extend-protocol AtomicLong
   RedissonAtomicLong
@@ -95,6 +85,12 @@
 ;; these are composable wrappers for one to one function <=> method
 ;; -----------------------------------------------------------------
 
+(defn set [r v]
+  (.set r v))
+
+(defn get [k]
+  (.get k))
+
 (defn add [rs v]
   (.add rs v))
 
@@ -106,10 +102,6 @@
 
 (defn contains-all? [rs xs]
   (.containsAll rs xs))
-
-(defn some? [rs xs]
-  (->> (some xs (get-all rs))
-       boolean))
 
 (defn put [rm k v]
   (.put rm k v))

@@ -36,7 +36,7 @@ $ make repl
 {:age 4603000000}
 ```
 
-clojure seq functions, such as `into`, for maps, sets, etc.. would work the same way they do on clojure seqs taking vectors and all:
+clojure seq functions, such as `into`, for maps, sets, lists, etc.. would work the same way they do on clojure seqs taking vectors and all:
 
 ```clojure
 ;; a set
@@ -54,6 +54,27 @@ true
 ;; now with pluto
 user=> planets
 #{:uranus :jupiter :saturn :mercury :neptune :pluto :venus :mars :earth}
+
+;; "some" clojure fns
+user=> (some #{:proxima-centauri-b} planets)
+nil
+
+user=> (some #{:proxima-centauri-b :saturn} planets)
+:saturn
+```
+
+atomic long
+
+```clojure
+user=> (def stars (rc/rlong redis "number-of-stars"))
+
+user=> stars
+#object[org.redisson.RedissonAtomicLong 0x426913c4 "0"]
+
+user=> (repeatedly 42 #(rd/incr counter))
+
+user=> (rd/get stars)
+42
 ```
 
 > _`redclaw.data` also has one to one redisson mapped functions: `add`, `add-all`, `get-all`, etc.._
@@ -64,6 +85,7 @@ looking inside the source (redis server):
 127.0.0.1:6379> keys *
 1) "planets"
 2) "solar-system"
+3) "number-of-stars"
 
 redis 127.0.0.1:6379> smembers "planets"
 1) "\x04>\x05earth"
@@ -75,6 +97,9 @@ redis 127.0.0.1:6379> smembers "planets"
 7) "\x04>\amercury"
 8) "\x04>\x04mars"
 9) "\x04>\x05venus"
+
+redis 127.0.0.1:6379> get "number-of-stars"
+"42"
 ```
 
 ## license
